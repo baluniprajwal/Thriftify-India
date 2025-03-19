@@ -1,15 +1,14 @@
 "use client";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "@/components/ui/navbar-menu";
 import { cn } from "@/lib/utils";
+import { User,ShoppingCart,Heart } from "lucide-react";
 import { useState } from "react";
+import { PlaceholdersAndVanishInputDemo } from "./search";
 
 export function NavbarDemo() {
   return (
     <div className="relative w-full flex items-center justify-center">
-      <Navbar className="top-2" />
-      <p className="text-black dark:text-white">
-        The Navbar will show on top of the page
-      </p>
+      <Navbar/>
     </div>
   );
 }
@@ -21,15 +20,10 @@ function Navbar({ className }: { className?: string }) {
       className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
     >
       <Menu setActive={setActive}>
-        <MenuItem setActive={setActive} active={active} item="Services">
-          <div className="flex flex-col space-y-4 text-sm">
-            <HoveredLink href="/web-dev">Web Development</HoveredLink>
-            <HoveredLink href="/interface-design">Interface Design</HoveredLink>
-            <HoveredLink href="/seo">Search Engine Optimization</HoveredLink>
-            <HoveredLink href="/branding">Branding</HoveredLink>
-          </div>
-        </MenuItem>
-        <MenuItem setActive={setActive} active={active} item="Products">
+        <div className="flex space-x-5 items-center">
+        <div className="hover:cursor-pointer">Home</div>
+        <div className="hover:cursor-pointer">Shop</div>
+        <MenuItem setActive={setActive} active={active} item="Categories" label="Categories">
           <div className="  text-sm grid grid-cols-2 gap-10 p-4">
             <ProductItem
               title="Algochurn"
@@ -57,14 +51,22 @@ function Navbar({ className }: { className?: string }) {
             />
           </div>
         </MenuItem>
-        <MenuItem setActive={setActive} active={active} item="Pricing">
-          <div className="flex flex-col space-y-4 text-sm">
-            <HoveredLink href="/hobby">Hobby</HoveredLink>
-            <HoveredLink href="/individual">Individual</HoveredLink>
-            <HoveredLink href="/team">Team</HoveredLink>
-            <HoveredLink href="/enterprise">Enterprise</HoveredLink>
-          </div>
-        </MenuItem>
+        </div>
+        <div className="w-[20%]">
+          <PlaceholdersAndVanishInputDemo/>
+        </div>
+        <div className="flex space-x-6 items-center">
+          <MenuItem setActive={setActive} active={active} label="profile" item={<User className="h-6 w-6"/>}>
+            <div className="flex flex-col space-y-4 text-sm">
+              <HoveredLink href="/hobby">Hobby</HoveredLink>
+              <HoveredLink href="/individual">Individual</HoveredLink>
+              <HoveredLink href="/team">Team</HoveredLink>
+              <HoveredLink href="/enterprise">Enterprise</HoveredLink>
+            </div>
+          </MenuItem>
+          <Heart className="hover:cursor-pointer"/>
+          <ShoppingCart className="hover:cursor-pointer"/>
+        </div>
       </Menu>
     </div>
   );
