@@ -1,13 +1,17 @@
+import { ImagesSliderDemo } from "@/components/hero"
 import { NavbarDemo } from "@/components/NavBar"
-import bannerImage from "./../assets/bannerImage3.jpeg"
+import { WobbleCardDemo } from "@/components/wobbleCard"
 
 
 const Home = () => {
   return (
-    <div className="bg-mutedBeige h-screen relative">
+    <div className="bg-mutedBeige min-h-screen relative">
         <div className="absolute"><NavbarDemo/></div>
         <div className="pt-[4%]">
-            <img src={bannerImage} alt="bannerImage" />
+            <ImagesSliderDemo/>
+        </div>
+        <div className="w-full pt-[2%]">
+          <WobbleCardDemo/>
         </div>
     </div>
   )

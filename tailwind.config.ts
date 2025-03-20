@@ -25,6 +25,11 @@ export default {
 			warmBrown: "#6B4F40",
 			mutedBeige: "#EDE6DA",
 			creamyWhite: "#F5F5F5",
+			mutedCopper: "#A67B5B",
+        	softBeige: "#D7C4B7",
+			warmGrey: "#A8A29E", // Soft grey
+    		taupeGrey: "#B3A79F", // Muted beige-grey
+    		charcoalGrey: "#5A5A5A", 
 			offBlack: "#1C1C1C",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
