@@ -1,17 +1,31 @@
+import CategoryGrid from "@/components/CategoryGrid"
+import CategoryGrid2 from "@/components/CategoryGrid2"
+import Divider from "@/components/Divider"
 import { ImagesSliderDemo } from "@/components/hero"
-import { NavbarDemo } from "@/components/NavBar"
-import { WobbleCardDemo } from "@/components/wobbleCard"
+import { InfiniteMovingCardsDemo } from "@/components/InfiniteMovingCards"
+import OurStorySection from "@/components/OurStorySection"
 
 
 const Home = () => {
   return (
-    <div className="bg-mutedBeige min-h-screen relative">
-        <div className="absolute"><NavbarDemo/></div>
-        <div className="pt-[4%]">
+    <div className="bg-mutedBeige min-h-screen relative overflow-hidden">
+        <div id="hero-section">
             <ImagesSliderDemo/>
         </div>
-        <div className="w-full pt-[2%]">
-          <WobbleCardDemo/>
+        <div className="p-[15px]">
+          <CategoryGrid/>
+        </div>
+        <div className="h-[22rem] bg-warmBrown">
+          <Divider/>
+        </div>
+        <div className="py-[15px]">
+          <CategoryGrid2/>
+        </div>
+        <div>
+          <OurStorySection/>
+        </div>
+        <div>
+          <InfiniteMovingCardsDemo/>
         </div>
     </div>
   )

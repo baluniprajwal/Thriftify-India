@@ -1,6 +1,5 @@
 "use client";
 import { WobbleCard } from "@/components/ui/wobble-card";
-import img1 from "./../assets/img1.png"
 
 export function WobbleCardDemo() {
   return (

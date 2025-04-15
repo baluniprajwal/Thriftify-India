@@ -8,9 +8,20 @@ export default {
   ],
   theme: {
   	extend: {
+		animation: {
+			scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+		},
+		keyframes: {
+			scroll: {
+			  to: {
+				transform: "translate(calc(-50% - 0.5rem))",
+			  },
+			},
+		},
 		fontFamily: {
 			sans: ["Poppins", "sans-serif"], // For body text
 			serif: ["Playfair Display", "serif"], // For headings
+			futur: ['Futur', 'sans-serif'],
 		  },
 		backgroundImage: {
 			'thrift-gradient': 'linear-gradient(to right top, #ede6da, #cabeb0, #a99887, #8a7362, #6b4f40)',
@@ -70,7 +81,7 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
   		}
   	}
   },

@@ -1,73 +1,76 @@
-"use client";
-import { HoveredLink, Menu, MenuItem, ProductItem } from "@/components/ui/navbar-menu";
-import { cn } from "@/lib/utils";
-import { User,ShoppingCart,Heart } from "lucide-react";
 import { useState } from "react";
-import { PlaceholdersAndVanishInputDemo } from "./search";
+import { useNavigate, Link } from "react-router-dom";
+import { Shirt, Search, User, ShoppingCart } from "lucide-react";
 
-export function NavbarDemo() {
-  return (
-    <div className="relative w-full flex items-center justify-center">
-      <Navbar/>
-    </div>
-  );
-}
+export default function Navbar() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
-function Navbar({ className }: { className?: string }) {
-  const [active, setActive] = useState<string | null>(null);
+  const handleSearchSubmit = (e:any) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setSearchOpen(false); // optionally close input
+      setQuery(""); // reset input
+    }
+  };
+
   return (
-    <div
-      className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
-    >
-      <Menu setActive={setActive}>
-        <div className="flex space-x-5 items-center">
-        <div className="hover:cursor-pointer">Home</div>
-        <div className="hover:cursor-pointer">Shop</div>
-        <MenuItem setActive={setActive} active={active} item="Categories" label="Categories">
-          <div className="  text-sm grid grid-cols-2 gap-10 p-4">
-            <ProductItem
-              title="Algochurn"
-              href="https://algochurn.com"
-              src="https://assets.aceternity.com/demos/algochurn.webp"
-              description="Prepare for tech interviews like never before."
-            />
-            <ProductItem
-              title="Tailwind Master Kit"
-              href="https://tailwindmasterkit.com"
-              src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
-              description="Production ready Tailwind css components for your next project"
-            />
-            <ProductItem
-              title="Moonbeam"
-              href="https://gomoonbeam.com"
-              src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
-              description="Never write from scratch again. Go from idea to blog in minutes."
-            />
-            <ProductItem
-              title="Rogue"
-              href="https://userogue.com"
-              src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
-              description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
-            />
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#fdf9f3]/70 text-neutral-800 py-4 shadow-md backdrop-blur-sm border-b border-neutral-200">
+      <div className="max-w-8xl mx-auto px-6">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-1">
+            <Shirt className="text-rose-400" />
+            <span className="text-lg font-semibold tracking-tight">Thriftify India</span>
+          </Link>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex space-x-8 text-sm font-medium text-neutral-600">
+            <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Home</Link>
+            <Link to="/fashion" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Fashion</Link>
+            <Link to="/shoes" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Shoes</Link>
+            <Link to="/accessories" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Accessories</Link>
+            <Link to="/about" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">About</Link>
+            <Link to="/contact" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Contact</Link>
+          </nav>
+
+          {/* Icons + Search */}
+          <div className="flex items-center gap-5 text-neutral-600 relative">
+            <button onClick={() => setSearchOpen(!searchOpen)} className="hover:text-neutral-900 transition">
+              <Search className="w-5 h-5" />
+            </button>
+            <Link to="/profile" className="hover:text-neutral-900 transition">
+              <User className="w-5 h-5" />
+            </Link>
+            <Link to="/cart" className="hover:text-neutral-900 transition">
+              <ShoppingCart className="w-5 h-5" />
+            </Link>
+
+            {/* Inline Search Input */}
+            {searchOpen && (
+              <form onSubmit={handleSearchSubmit} className="absolute right-0 top-10 w-64">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  autoFocus
+                  placeholder="Search products..."
+                  className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-rose-400 bg-white"
+                />
+              </form>
+            )}
           </div>
-        </MenuItem>
         </div>
-        <div className="w-[20%]">
-          <PlaceholdersAndVanishInputDemo/>
-        </div>
-        <div className="flex space-x-6 items-center">
-          <MenuItem setActive={setActive} active={active} label="profile" item={<User className="h-6 w-6"/>}>
-            <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/hobby">Hobby</HoveredLink>
-              <HoveredLink href="/individual">Individual</HoveredLink>
-              <HoveredLink href="/team">Team</HoveredLink>
-              <HoveredLink href="/enterprise">Enterprise</HoveredLink>
-            </div>
-          </MenuItem>
-          <Heart className="hover:cursor-pointer"/>
-          <ShoppingCart className="hover:cursor-pointer"/>
-        </div>
-      </Menu>
-    </div>
+      </div>
+    </header>
   );
 }
+
+
+
+
+
+
+
