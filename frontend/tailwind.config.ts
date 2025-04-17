@@ -34,7 +34,7 @@ export default {
   		},
   		colors: {
 			warmBrown: "#6B4F40",
-			mutedBeige: "#EDE6DA",
+			mutedBeige: "#f0e8dd",
 			creamyWhite: "#F5F5F5",
 			mutedCopper: "#A67B5B",
         	softBeige: "#D7C4B7",

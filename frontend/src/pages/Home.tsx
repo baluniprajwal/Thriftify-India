@@ -1,8 +1,8 @@
 import CategoryGrid from "@/components/CategoryGrid"
 import CategoryGrid2 from "@/components/CategoryGrid2"
 import Divider from "@/components/Divider"
+import Grid3 from "@/components/Grid3"
 import { ImagesSliderDemo } from "@/components/hero"
-import { InfiniteMovingCardsDemo } from "@/components/InfiniteMovingCards"
 import OurStorySection from "@/components/OurStorySection"
 
 
@@ -25,7 +25,7 @@ const Home = () => {
           <OurStorySection/>
         </div>
         <div>
-          <InfiniteMovingCardsDemo/>
+          <Grid3/>
         </div>
     </div>
   )
