@@ -5,30 +5,30 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
-// Load env variables
+
 dotenv.config();
 
-// Connect to MongoDB
+
 connectDB();
 
-// Create app
+
 const app = express();
 
-// Middlewares
 
-// ✅ Proper CORS config to support cookies
 app.use(cors({
-  origin: 'http://localhost:5173', // Your React frontend origin
-  credentials: true               // Allow credentials (cookies, auth headers)
+  origin: 'http://localhost:5173', 
+  credentials: true               
 }));
 
-app.use(cookieParser());          // ✅ Needed to parse cookies
-app.use(express.json());          // Parse JSON requests
-app.use(morgan('dev'));           // Log HTTP requests
+app.use(cookieParser());        
+app.use(express.json());          
+app.use(morgan('dev'));           
 
 // Routes
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/product', productRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
