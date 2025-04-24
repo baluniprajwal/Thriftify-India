@@ -1,36 +1,20 @@
-import { Search, Shirt, ShoppingCart, User, X } from "lucide-react";
+import { Search, Shirt, ShoppingCart, User} from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Product, useSearchProductsQuery } from "@/redux/apis/productApis";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export default function Navbar() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
-  const results = [
-    {
-      id: 1,
-      name: "CLASSIC TUCK MEN'S STRAIGHT JEANS",
-      price: "₹1,999",
-      image: "https://i.pinimg.com/736x/3b/28/58/3b2858b71bfc24d6cedcb959e994d8f2.jpg", // replace with actual image URLs
-    },
-    {
-      id: 2,
-      name: "FADED COBALT STRAIGHT FIT JEANS",
-      price: "₹1,999",
-      image: "https://i.pinimg.com/736x/a5/08/e5/a508e5c4a41edc69b0f00d30375287f0.jpg",
-    },
-    {
-      id: 3,
-      name: "MAYTIME STRAIGHT JEANS",
-      price: "₹1,999",
-      image: "https://i.pinimg.com/736x/44/a2/ed/44a2ed6d7315776d41847698a504402a.jpg",
-    },
-  ];
-
-
+  const { data: results = [], isLoading } = useSearchProductsQuery(
+    query ? { name: query } : skipToken
+  );
+  
   const handleSearchSubmit = (e:any) => {
     e.preventDefault();
     if (query.trim()) {
@@ -95,19 +79,21 @@ export default function Navbar() {
                       <p className="text-sm text-neutral-500 text-center mt-6">
                         Search for a product
                       </p>
+                    ) : isLoading ? (
+                      <p className="text-sm text-neutral-500 text-center mt-6">Loading...</p>
                     ) : results.length === 0 ? (
                       <p className="text-sm text-neutral-500 text-center mt-6">
                         No products found
                       </p>
                     ) : (
-                      results.map((item) => (
+                      results.map((item:Product) => (
                         <Link
-                          to={`/product/${item.id}`}
-                          key={item.id}
+                          to={`/product/${item._id}`}
+                          key={item._id}
                           className="flex items-center gap-4 hover:bg-neutral-200 p-2 rounded-md transition"
                         >
                           <img
-                            src={item.image}
+                            src={item.imageUrls[0]}
                             alt={item.name}
                             className="w-16 h-16 object-cover rounded-md"
                           />
