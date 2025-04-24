@@ -28,6 +28,14 @@ export const productApi = createApi({
               params,
             }),
         }),
+        getAllProducts: builder.query<Product[], void>({
+            query: () => '',
+            providesTags: ['Product'],
+        }),
+        getProductById: builder.query<Product, string>({
+            query: (id) => `${id}`,
+            providesTags: (result, error, id) => [{ type: 'Product', id }],
+        }),
     })
 });
   
