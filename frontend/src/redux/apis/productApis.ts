@@ -40,5 +40,7 @@ export const productApi = createApi({
 });
   
 export const {
-    useSearchProductsQuery
+    useSearchProductsQuery,
+    useGetAllProductsQuery,
+    useGetProductByIdQuery,
   } = productApi;

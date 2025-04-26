@@ -87,6 +87,7 @@ export default function Navbar() {
                       </p>
                     ) : (
                       results.map((item:Product) => (
+                        <SheetClose asChild>
                         <Link
                           to={`/product/${item._id}`}
                           key={item._id}
@@ -104,6 +105,7 @@ export default function Navbar() {
                             <p className="text-sm text-neutral-500">{item.price}</p>
                           </div>
                         </Link>
+                        </SheetClose>
                       ))
                     )}
                   </div>
