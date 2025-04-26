@@ -6,6 +6,10 @@ import { Input } from "./ui/input";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Product, useSearchProductsQuery } from "@/redux/apis/productApis";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/redux/reducers/cartReducer";
 
 export default function Navbar() {
   const [query, setQuery] = useState("");
@@ -14,6 +18,10 @@ export default function Navbar() {
   const { data: results = [], isLoading } = useSearchProductsQuery(
     query ? { name: query } : skipToken
   );
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+
   
   const handleSearchSubmit = (e:any) => {
     e.preventDefault();
@@ -123,14 +131,95 @@ export default function Navbar() {
                 </div>
               </SheetContent>
             </Sheet>
-
-              
             <Link to="/profile" className="hover:text-neutral-900 transition">
               <User className="w-5 h-5" />
             </Link>
-            <Link to="/cart" className="hover:text-neutral-900 transition">
-              <ShoppingCart className="w-5 h-5" />
-            </Link>
+            <Sheet>
+              <SheetTrigger asChild>
+              <button className="hover:text-neutral-900 transition relative">
+                <ShoppingCart className="w-5 h-5" />
+                
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+                    {cartItems.length}
+                  </span>
+                )}
+              </button>
+              </SheetTrigger>
+
+              <SheetContent side="right" className="w-full sm:max-w-[550px] p-6 bg-[#ffffff] flex flex-col">
+                <div className="flex-1 overflow-y-auto">
+                  
+                  <div className="flex items-center gap-2 mb-6">
+                    <ShoppingCart className="w-5 h-5" />
+                    <h2 className="text-lg font-bold">{cartItems.length} {cartItems.length === 1 ? "ITEM" : "ITEMS"}</h2>
+                  </div>
+
+                  <div className="border-b border-neutral-300 mb-6"></div>
+
+                  <div className="flex flex-col gap-6">
+                    {cartItems.map((item) => (
+                      <div key={item.product._id} className="flex items-start gap-4">
+                        <img
+                          src={item.product.imageUrls[0]}
+                          alt={item.product.name}
+                          className="w-24 h-24 object-cover rounded-md"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div>
+                            <p className="font-semibold text-md text-neutral-800 leading-tight">
+                              {item.product.name}
+                            </p>
+                            <p className="text-sm text-neutral-500 mt-1">Conditon: {item.product.condition || "N/A"}</p>
+                          </div>
+
+                          <div className="flex items-center gap-4 mt-2">
+                            <div className="flex items-center border rounded-full overflow-hidden w-fit">
+                              <button
+                                onClick={() => dispatch(decreaseQuantity(item.product._id))}
+                                className="px-3 py-1 text-lg hover:bg-neutral-100"
+                              >-</button>
+
+                              <span className="px-4 py-1 text-md">{item.quantity}</span>
+
+                              <button
+                                onClick={() => dispatch(increaseQuantity(item.product._id))}
+                                className="px-3 py-1 text-lg hover:bg-neutral-100"
+                              >+</button>
+                            </div>
+                            <button
+                              onClick={() => dispatch(removeFromCart(item.product._id))}
+                              className="text-sm text-gray-400 underline hover:text-gray-600"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="text-md font-semibold text-neutral-800">
+                          ₹{item.product.price * item.quantity}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-10">
+                  <div className="border-t border-neutral-300 pt-4">
+                    <p className="text-center text-sm font-semibold mb-2">Get any 2 bottoms @ ₹3199</p>
+                  </div>
+
+                  <div className="flex justify-between text-md font-semibold py-4">
+                    <span>Subtotal</span>
+                    <span>₹{subtotal}</span>
+                  </div>
+
+                  <Button className="w-full mt-2 text-sm tracking-wide bg-black hover:bg-neutral-800 text-white rounded-none py-4">
+                    PLACE ORDER
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
