@@ -10,6 +10,11 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/redux/reducers/cartReducer";
+import axios from "axios";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Label } from "./ui/label";
+
+
 
 export default function Navbar() {
   const [query, setQuery] = useState("");
@@ -21,6 +26,13 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  const [shippingInfo, setShippingInfo] = useState({
+    fullName: "",
+    addressLine: "",
+    city: "",
+    postalCode: "",
+  });
+  
 
   
   const handleSearchSubmit = (e:any) => {
@@ -29,8 +41,39 @@ export default function Navbar() {
       navigate(`/search?q=${encodeURIComponent(query)}`);
       setQuery(""); 
     }
+  }
+  const handleCheckout = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER}/api/v1/payment/checkout`,
+        {
+          cartItems: cartItems.map(item => ({
+            productId: item.product._id,
+            name: item.product.name,
+            image: item.product.imageUrls[0],
+            price: item.product.price,
+            quantity: item.quantity,
+          })),
+          shippingAddress: {
+            fullName: shippingInfo.fullName,
+            addressLine: shippingInfo.addressLine,
+            city: shippingInfo.city,
+            postalCode: shippingInfo.postalCode
+          },          
+          totalAmount: subtotal,
+          userEmail: "test@example.com",
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Failed to initiate checkout. Please try again.");
+    }
   };
-
+  
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/70 text-neutral-800 py-4 shadow-md backdrop-blur-sm border-b border-neutral-200">
       <div className="max-w-8xl mx-auto px-6">
@@ -213,10 +256,102 @@ export default function Navbar() {
                     <span>Subtotal</span>
                     <span>₹{subtotal}</span>
                   </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="w-full mt-4 text-sm tracking-wide bg-black hover:bg-neutral-800 text-white rounded-md py-3">
+                        PLACE ORDER
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[600px] max-h-[95vh] overflow-y-auto px-4 py-6 rounded-xl">
+                      <DialogHeader>
+                        <DialogTitle className="text-xl font-semibold">Edit Shipping Address</DialogTitle>
+                        <DialogDescription className="text-sm text-muted-foreground">
+                          Make changes to your shipping address here. Click save when you're done.
+                        </DialogDescription>
+                      </DialogHeader>
 
-                  <Button className="w-full mt-2 text-sm tracking-wide bg-black hover:bg-neutral-800 text-white rounded-none py-4">
-                    PLACE ORDER
-                  </Button>
+                      <div className="flex flex-col gap-5 py-6">
+                        <div className="flex items-center gap-3">
+                          <Label htmlFor="fullName" className="w-20 text-sm font-medium text-right">
+                            Full Name
+                          </Label>
+                          <div className="flex-1">
+                          <Input
+                            id="fullName"
+                            placeholder="John Doe"
+                            className="w-full p-2 border rounded-md"
+                            value={shippingInfo.fullName}
+                            onChange={(e) => setShippingInfo({ ...shippingInfo, fullName: e.target.value })}
+                            required
+                          />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Label htmlFor="addressLine" className="w-20 text-sm font-medium text-right">
+                            Address Line
+                          </Label>
+                          <div className="flex-1">
+                          <Input
+                            id="addressLine"
+                            placeholder="123 Main Street"
+                            className="w-full p-2 border rounded-md"
+                            value={shippingInfo.addressLine}
+                            onChange={(e) => setShippingInfo({ ...shippingInfo, addressLine: e.target.value })}
+                            required
+                          />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Label htmlFor="city" className="w-20 text-sm font-medium text-right">
+                            City
+                          </Label>
+                          <div className="flex-1">
+                          <Input
+                            id="city"
+                            placeholder="Mumbai"
+                            className="w-full p-2 border rounded-md"
+                            value={shippingInfo.city}
+                            onChange={(e) => setShippingInfo({ ...shippingInfo, city: e.target.value })}
+                            required
+                          />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Label htmlFor="postalCode" className="w-20 text-sm font-medium text-right">
+                            Postal Code
+                          </Label>
+                          <div className="flex-1">
+                          <Input
+                            id="postalCode"
+                            placeholder="400001"
+                            className="w-full p-2 border rounded-md"
+                            value={shippingInfo.postalCode}
+                            onChange={(e) => setShippingInfo({ ...shippingInfo, postalCode: e.target.value })}
+                            required
+                          />
+                          </div>
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button
+                          onClick={handleCheckout}
+                          type="submit"
+                          className="w-full py-3 text-white bg-black rounded-md hover:bg-neutral-800 text-sm font-medium tracking-wide"
+                          disabled={
+                            !shippingInfo.fullName ||
+                            !shippingInfo.addressLine ||
+                            !shippingInfo.city ||
+                            !shippingInfo.postalCode
+                          }
+                        >
+                          Place Order
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </SheetContent>
             </Sheet>
