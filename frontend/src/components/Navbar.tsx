@@ -91,11 +91,11 @@ export default function Navbar({shoesSectionRef}:any) {
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8 text-sm font-medium text-neutral-600">
             <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Home</Link>
-            <Link to="/fashion" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Fashion</Link>
-            <Link to="/shoes" onClick={handleScrollToShoes} className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Shoes</Link>
-            <Link to="/accessories" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Accessories</Link>
-            <Link to="/about" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">About</Link>
-            <Link to="/contact" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Contact</Link>
+            <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Fashion</Link>
+            <Link to="/" onClick={handleScrollToShoes} className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Shoes</Link>
+            <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Accessories</Link>
+            <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">About</Link>
+            <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Contact</Link>
           </nav>
 
           {/* Icons + Search */}
