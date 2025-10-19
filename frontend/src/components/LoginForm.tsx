@@ -79,15 +79,6 @@ export default function LoginForm() {
             {isLoading ? "Logging in..." : "Log In →"}
           </button>
 
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="flex items-center justify-center gap-2 w-full border border-neutral-300 dark:border-neutral-700 rounded-md h-10 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 hover:scale-[1.02] hover:shadow-sm"
-          >
-            <IconBrandGoogle className="w-5 h-5" />
-            Log in with Google
-          </button>
-
           <p className="text-sm text-center text-neutral-700 dark:text-neutral-400 mt-4">
             Don’t have an account?{" "}
             <Link

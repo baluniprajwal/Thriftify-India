@@ -1,22 +1,22 @@
-import { Search, Shirt, ShoppingCart, User} from "lucide-react";
+import { Product, useSearchProductsQuery } from "@/redux/apis/productApis";
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/redux/reducers/cartReducer";
+import { RootState } from "@/redux/store";
+import { skipToken } from "@reduxjs/toolkit/query";
+import axios from "axios";
+import { Search, Shirt, ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Product, useSearchProductsQuery } from "@/redux/apis/productApis";
-import { skipToken } from "@reduxjs/toolkit/query";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/redux/reducers/cartReducer";
-import axios from "axios";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 
 
 
-export default function Navbar() {
+
+export default function Navbar({shoesSectionRef}:any) {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
@@ -32,7 +32,11 @@ export default function Navbar() {
     city: "",
     postalCode: "",
   });
-  
+  const handleScrollToShoes = () => {
+    if (shoesSectionRef.current) {
+      shoesSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   
   const handleSearchSubmit = (e:any) => {
@@ -88,7 +92,7 @@ export default function Navbar() {
           <nav className="hidden md:flex space-x-8 text-sm font-medium text-neutral-600">
             <Link to="/" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Home</Link>
             <Link to="/fashion" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Fashion</Link>
-            <Link to="/shoes" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Shoes</Link>
+            <Link to="/shoes" onClick={handleScrollToShoes} className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Shoes</Link>
             <Link to="/accessories" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Accessories</Link>
             <Link to="/about" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">About</Link>
             <Link to="/contact" className="hover:text-neutral-900 hover:underline underline-offset-4 transition">Contact</Link>

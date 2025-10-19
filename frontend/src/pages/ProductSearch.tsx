@@ -22,6 +22,7 @@ import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { useSearchProductsQuery } from "@/redux/apis/productApis";
+import { useNavigate } from "react-router-dom";
 
 const ProductSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,6 +36,8 @@ const ProductSearch = () => {
     condition: undefined as string | undefined,
     category: undefined as string | undefined,
   });
+  const navigate = useNavigate();
+
   const { data: products = [], isLoading } = useSearchProductsQuery({
     name: appliedFilters.name,
     minPrice: appliedFilters.minPrice,
@@ -219,16 +222,16 @@ const ProductSearch = () => {
                   <img
                     src={product.imageUrls[0]}
                     alt={product.name}
-                    className="w-full h-[450px] object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    className="w-full h-[450px] object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
                   />
-                  <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-black text-white text-sm px-4 py-2 rounded-full transition-opacity duration-300">
+                  <button onClick={() => navigate(`/product/${product._id}`)}className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-black text-white text-sm px-4 py-2 rounded-full transition-opacity duration-300">
                     Quick View
                   </button>
                 </div>
                 <div className="mt-2">
                   <p className="text-sm font-medium">{product.name.toUpperCase()}</p>
                   <p className="text-base font-semibold">
-                    ₹{(product.price * 83).toFixed(0)}
+                    ₹{product.price}
                   </p>
                 </div>
               </div>

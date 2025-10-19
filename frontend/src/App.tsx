@@ -10,36 +10,37 @@ import { useGetMeQuery } from "./redux/apis/userApi";
 import { useEffect } from "react";
 import { setUser, clearUser } from "./redux/reducers/authReducer";
 import ProductSearch from "./pages/ProductSearch";
+import Dashboard from "./pages/admin/Dashboard";
+import CancelRedirect from "./components/CancelRedirect";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.auth.user); // Get user from Redux
+  const user = useSelector((state: any) => state.auth.user);
 
-  // Conditionally skip query if the user exists
   const {
     data: userProfile,
     isLoading,
     isError,
     error,
   } = useGetMeQuery(undefined, {
-    skip: !user, // Only skip if the user is NOT logged in
+    skip: !user,
   });
 
   useEffect(() => {
     if (userProfile) {
-      dispatch(setUser(userProfile)); // Set user in Redux if successful
+      dispatch(setUser(userProfile)); 
     } else if (!isLoading && isError) {
       const status = (error as any)?.status;
       if (status !== 401) {
         console.error("Unexpected error while fetching user:", error);
         toast.error("Something went wrong while fetching user data.");
       }
-      dispatch(clearUser()); // Clear user data on error
+      dispatch(clearUser());
     }
   }, [userProfile, isLoading, isError, error, dispatch]);
 
   if (isLoading) {
-    // Show loading spinner or something while fetching
+   
     return <div>Loading...</div>;
   }
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/search" element={<ProductSearch />} />
         </Route>
+        <Route path="/cancel" element={<CancelRedirect />} />
       </Routes>
       <Toaster/>
     </Router>

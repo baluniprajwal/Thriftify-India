@@ -6,9 +6,11 @@ import Grid3 from "@/components/Grid3"
 import { ImagesSliderDemo } from "@/components/hero"
 import Newsletter from "@/components/NewsLetter"
 import OurStorySection from "@/components/OurStorySection"
+import { useRef } from "react"
 
 
 const Home = () => {
+  const shoesSectionRef = useRef<HTMLDivElement | null>(null);
   return (
     <div className="bg-mutedBeige min-h-screen relative overflow-hidden">
         <div id="hero-section">
@@ -26,7 +28,7 @@ const Home = () => {
         <div>
           <OurStorySection/>
         </div>
-        <div>
+        <div ref={shoesSectionRef}>
           <Grid3/>
         </div>
         <div>
