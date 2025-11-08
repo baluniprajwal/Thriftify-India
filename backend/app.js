@@ -11,7 +11,7 @@ import productRoutes from './routes/productRoutes.js';
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import { stripeWebhook } from './controllers/paymentController.js';
-
+import job from './utils/cronjob.js';
 
 connectDB();
 
@@ -23,6 +23,7 @@ app.use(cors({
   credentials: true
 }));
 
+job.start();
 app.use(cookieParser());
 app.use(morgan('dev'));
 app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }), stripeWebhook);
@@ -45,6 +46,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("🚀 Server running on http://localhost:${PORT}");
 });
-
 
 
