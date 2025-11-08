@@ -11,39 +11,37 @@ import productRoutes from './routes/productRoutes.js';
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import { stripeWebhook } from './controllers/paymentController.js';
-
-
+import serverless from 'serverless-http';
 
 connectDB();
-
 
 const app = express();
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-
 app.use(cors({
-  origin: process.env.FRONTEND_URL, 
-  credentials: true               
+  origin: process.env.FRONTEND_URL,
+  credentials: true
 }));
 
-
-
 app.use(cookieParser());
-app.use(morgan('dev')); 
-app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }),stripeWebhook);
-app.use(express.json());          
-
-          
+app.use(morgan('dev'));
+app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }), stripeWebhook);
+app.use(express.json());
 
 // Routes
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
-app.use('/api/v1/order',orderRoutes);
-app.use('/api/v1/payment',paymentRoutes)  
+app.use('/api/v1/order', orderRoutes);
+app.use('/api/v1/payment', paymentRoutes);
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+// ✅ Only run the server locally
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log("🚀 Server running on http://localhost:${PORT}");
+  });
+}
+
+// ✅ Export as a serverless function for Vercel
+export default serverless(app);
 
