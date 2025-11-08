@@ -40,13 +40,11 @@ app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/order', orderRoutes);
 app.use('/api/v1/payment', paymentRoutes);
 
-// ✅ Only run the server locally
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log("🚀 Server running on http://localhost:${PORT}");
-  });
-}
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log("🚀 Server running on http://localhost:${PORT}");
+});
 
 // ✅ Export as a serverless function for Vercel
 export default serverless(app);
