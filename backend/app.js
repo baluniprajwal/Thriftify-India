@@ -28,6 +28,12 @@ app.use(morgan('dev'));
 app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: '✅ Server is up and running!',
+  });
+});
 // Routes
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
