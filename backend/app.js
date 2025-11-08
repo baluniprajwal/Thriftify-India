@@ -11,7 +11,6 @@ import productRoutes from './routes/productRoutes.js';
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import { stripeWebhook } from './controllers/paymentController.js';
-import job from './utils/cronjob.js';
 
 
 
@@ -28,7 +27,7 @@ app.use(cors({
 }));
 
 
-job.start();
+
 app.use(cookieParser());
 app.use(morgan('dev')); 
 app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }),stripeWebhook);
