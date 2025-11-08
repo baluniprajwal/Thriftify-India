@@ -11,7 +11,7 @@ import productRoutes from './routes/productRoutes.js';
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import { stripeWebhook } from './controllers/paymentController.js';
-import serverless from 'serverless-http';
+
 
 connectDB();
 
@@ -46,6 +46,5 @@ app.listen(PORT, () => {
   console.log("🚀 Server running on http://localhost:${PORT}");
 });
 
-// ✅ Export as a serverless function for Vercel
-export default serverless(app);
+
 
